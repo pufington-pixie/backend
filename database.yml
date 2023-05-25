@@ -1,0 +1,9 @@
+---
+development:
+  dialect: mysql
+  database: project
+  user: root
+  password: ganesh
+  host: 127.0.0.1
+  pool: 5
+
