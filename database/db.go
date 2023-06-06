@@ -33,3 +33,12 @@ func ConnectDB() (*sql.DB,error) {
     return db,nil
     
 }
+
+// GetDB returns a database object
+func GetDB() (*sql.DB) {
+	db,err := ConnectDB()
+	if err!=nil{
+		log.Fatal(err)
+	}
+	return db
+  }
