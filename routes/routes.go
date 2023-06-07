@@ -112,7 +112,7 @@ func SetRoutes() {
 	 *       200:
 	 *         description: Success
 	 */
-	r.Post("/upload", controller.UploadHandler)
+	r.Post("/upload/{id}", controller.UploadHandler)
 
 	// Swagger UI route
 	r.Get("/swagger/*", httpSwagger.WrapHandler)

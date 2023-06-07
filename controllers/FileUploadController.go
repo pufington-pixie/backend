@@ -2,13 +2,15 @@ package controller
 
 import (
 	"encoding/csv"
-	// "io"
-	// "os"
-	// "path/filepath"
+	"io"
+	"os"
+	"path/filepath"
+	"strconv"
 
 	"net/http"
 
 	"example.com/database"
+	"github.com/go-chi/chi"
 )
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	
@@ -20,7 +22,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the file from the request
-	file, _, err := r.FormFile("file")
+	file, handler, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -38,28 +40,35 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	db := database.GetDB()
     defer db.Close()
 
-		// // Save a copy of the CSV file in the assets folder
-		// dst, err := os.Create("assets/" + filepath.Base(handler.Filename))
-		// if err != nil {
-		// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-		// 	return
-		// }
-		// defer dst.Close()
+		// Save a copy of the CSV file in the assets folder
+		dst, err := os.Create("assets/" + filepath.Base(handler.Filename))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer dst.Close()
 	
-		// _, err = file.Seek(0, io.SeekStart) // Reset file position to the beginning
-		// if err != nil {
-		// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-		// 	return
-		// }
+		_, err = file.Seek(0, io.SeekStart) // Reset file position to the beginning
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	
-		// _, err = io.Copy(dst, file)
-		// if err != nil {
-		// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-		// 	return
-		// }
+		_, err = io.Copy(dst, file)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	// Get the project ID from the projects table
+	projectIDStr := chi.URLParam(r, "id")
+	projectID, err := strconv.Atoi(projectIDStr)
+	if err != nil {
+	    http.Error(w, err.Error(), http.StatusBadRequest)
+	    return
+	}
 
 	// Prepare the SQL statement for bulk insertion
-	stmt, err := db.Prepare("INSERT INTO datapoints (EquipID, System,EquipType,Descriptor) VALUES (?, ?, ?,?)")
+	stmt, err := db.Prepare("INSERT INTO datapoints (projectID,EquipID, System,EquipType,Descriptor) VALUES (?, ?, ?,?,?)")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -68,7 +77,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Insert each row into the database
 	for _, row := range records {
-		_, err := stmt.Exec(row[0], row[1], row[2],row[4]) // Modify column names based on your CSV structure
+		_, err := stmt.Exec(projectID,row[0], row[1], row[2],row[4]) // Modify column names based on your CSV structure
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

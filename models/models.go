@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Project struct {
-	ProjectID int       `json:"projectid"`
+	ID        int       `json:"id"`
 	Name      string    `json:"name"`
 	Title     string    `json:"title"`
 	Date      time.Time `json:"date"`
