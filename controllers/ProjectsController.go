@@ -22,7 +22,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param project body models.Project true "Project to be inserted"
-// @Success 200 {object} models.Response
+// @Success 200 {object} models.Project
 // @Failure 400 {object} models.Response
 // @Failure 500 {object} models.Response
 // @Router /projects [post]
@@ -92,9 +92,9 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param project body models.Project true "Project object to be updated"
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Project
-// @Failure 500 {object} models.Project
+// @Success 200 {object} models.Project
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /projects [put]
 func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
@@ -165,7 +165,7 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 // @Description Get the list of projects from the database
 // @Tags projects
 // @Produce json
-// @Success 200 {object} models.Response
+// @Success 200 {object} models.Project
 // @Failure 500 {object} models.Response
 // @Router /projects [get]
 func GetProject(w http.ResponseWriter, r *http.Request) {
@@ -218,7 +218,7 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} models.Response
+// @Success 200 {object} models.Project
 // @Failure 404 {object} models.Response
 // @Failure 500 {object} models.Response
 // @Router /projects/{id} [get]
@@ -266,11 +266,10 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
+// @Success 200 {object} models.Project
+// @Failure 404 {object} models.Response
 // @Failure 500 {object} models.Response
 // @Router /projects/{id} [delete]
-
 func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 

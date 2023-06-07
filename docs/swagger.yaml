@@ -119,7 +119,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Response'
+            $ref: '#/definitions/models.Project'
         "500":
           description: Internal Server Error
           schema:
@@ -144,7 +144,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Response'
+            $ref: '#/definitions/models.Project'
         "400":
           description: Bad Request
           schema:
@@ -173,19 +173,45 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Response'
+            $ref: '#/definitions/models.Project'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.Project'
+            $ref: '#/definitions/models.Response'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.Project'
+            $ref: '#/definitions/models.Response'
       summary: Update an existing project
       tags:
       - projects
   /projects/{id}:
+    delete:
+      description: Delete a project from the database by its ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a project by ID
+      tags:
+      - projects
     get:
       description: Get a project from the database by its ID
       parameters:
@@ -200,7 +226,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Response'
+            $ref: '#/definitions/models.Project'
         "404":
           description: Not Found
           schema:
