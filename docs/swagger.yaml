@@ -156,35 +156,6 @@ paths:
       summary: Insert a new project
       tags:
       - projects
-    put:
-      consumes:
-      - application/json
-      description: Update an existing project in the database
-      parameters:
-      - description: Project object to be updated
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/models.Project'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Project'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Response'
-      summary: Update an existing project
-      tags:
-      - projects
   /projects/{id}:
     delete:
       description: Delete a project from the database by its ID
@@ -236,6 +207,40 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get a project by ID
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Update an existing project in the database
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project object to be updated
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update an existing project
       tags:
       - projects
   /upload/{id}:

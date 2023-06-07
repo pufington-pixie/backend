@@ -91,11 +91,12 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Accept json
 // @Produce json
+// @Param id path int true "Project ID"
 // @Param project body models.Project true "Project object to be updated"
 // @Success 200 {object} models.Project
 // @Failure 400 {object} models.Response
 // @Failure 500 {object} models.Response
-// @Router /projects [put]
+// @Router /projects/{id} [put]
 func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 
@@ -266,7 +267,7 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} models.Project
+// @Success 200 {object} models.Response
 // @Failure 404 {object} models.Response
 // @Failure 500 {object} models.Response
 // @Router /projects/{id} [delete]

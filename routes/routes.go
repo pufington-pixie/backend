@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"log"
 	"net/http"
 
 	controller "example.com/controllers"
@@ -120,6 +121,8 @@ func SetRoutes() {
 	))
 
 
-	// Serve
-	http.ListenAndServe(":8080", r)
+	// Start the HTTP server
+	port := ":8080"
+	log.Printf("Server listening on port %s", port)
+	log.Fatal(http.ListenAndServe(port, r))
 }
