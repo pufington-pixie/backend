@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	controller "example.com/controllers"
-	"github.com/go-chi/chi"
-	"github.com/swaggo/http-swagger"
 	_ "example.com/docs" // Import the generated Swagger docs
+	"github.com/go-chi/chi"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // SetRoutes sets up the routing for the API
