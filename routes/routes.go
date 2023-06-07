@@ -6,7 +6,7 @@ import (
 	controller "example.com/controllers"
 	"github.com/go-chi/chi"
 	"github.com/swaggo/http-swagger"
-	// _ "example.com/docs" // Import the generated Swagger docs
+	_ "example.com/docs" // Import the generated Swagger docs
 )
 
 // SetRoutes sets up the routing for the API
@@ -29,7 +29,7 @@ func SetRoutes() {
 
 	/**
 	 * @swagger
-	 * /project:
+	 * /projects:
 	 *   post:
 	 *     summary: Create a new project
 	 *     tags:
@@ -38,11 +38,11 @@ func SetRoutes() {
 	 *       200:
 	 *         description: Success
 	 */
-	r.Post("/project", controller.InsertProject)
+	r.Post("/projects", controller.InsertProject)
 
 	/**
 	 * @swagger
-	 * /project/{id}:
+	 * /projects/{id}:
 	 *   get:
 	 *     summary: Get a project by ID
 	 *     tags:
@@ -58,11 +58,11 @@ func SetRoutes() {
 	 *       200:
 	 *         description: Success
 	 */
-	r.Get("/project/{id}", controller.GetProjectByID)
+	r.Get("/projects/{id}", controller.GetProjectByID)
 
 	/**
 	 * @swagger
-	 * /project/{id}:
+	 * /projects/{id}:
 	 *   put:
 	 *     summary: Update a project by ID
 	 *     tags:
@@ -78,11 +78,11 @@ func SetRoutes() {
 	 *       200:
 	 *         description: Success
 	 */
-	r.Put("/project/{id}", controller.UpdateProject)
+	r.Put("/projects/{id}", controller.UpdateProject)
 
 	/**
 	 * @swagger
-	 * /project/{id}:
+	 * /projects/{id}:
 	 *   delete:
 	 *     summary: Delete a project by ID
 	 *     tags:
@@ -98,7 +98,7 @@ func SetRoutes() {
 	 *       200:
 	 *         description: Success
 	 */
-	r.Delete("/project/{id}", controller.DeleteProject)
+	r.Delete("/projects/{id}", controller.DeleteProject)
 
 	// Routes for FileUpload
 	/**
@@ -115,7 +115,10 @@ func SetRoutes() {
 	r.Post("/upload/{id}", controller.UploadHandler)
 
 	// Swagger UI route
-	r.Get("/swagger/*", httpSwagger.WrapHandler)
+	r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition
+	))
+
 
 	// Serve
 	http.ListenAndServe(":8080", r)

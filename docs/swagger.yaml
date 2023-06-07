@@ -1,0 +1,246 @@
+definitions:
+  models.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.Project:
+    properties:
+      branchId:
+        description: |-
+          The branch ID associated with the project.
+
+          required: true
+          example: 1
+        type: integer
+      date:
+        description: |-
+          The date of the project.
+
+          required: true
+          format: date
+          example: 2023-06-07
+        type: string
+      id:
+        description: |-
+          The unique identifier of the project.
+
+          required: true
+          example: 1
+        type: integer
+      name:
+        description: |-
+          The name of the project.
+
+          required: true
+          example: Project 1
+        type: string
+      notes:
+        description: |-
+          Additional notes for the project.
+
+          required: false
+          example: Some notes about the project.
+        type: string
+      sapnumber:
+        description: |-
+          The SAP number of the project.
+
+          required: true
+          example: SAP12345
+        type: string
+      services:
+        allOf:
+        - $ref: '#/definitions/models.Service'
+        description: |-
+          The service associated with the project.
+
+          required: true
+      statusId:
+        description: |-
+          The status ID of the project.
+
+          required: true
+          example: 1
+        type: integer
+      title:
+        description: |-
+          The title of the project.
+
+          required: true
+          example: Title 1
+        type: string
+    type: object
+  models.Response:
+    properties:
+      data:
+        description: The data payload of the response.
+      message:
+        description: |-
+          The message associated with the response.
+
+          required: true
+          example: Success
+        type: string
+      status:
+        description: |-
+          The status code of the response.
+
+          required: true
+          example: 200
+        type: integer
+    type: object
+  models.Service:
+    properties:
+      id:
+        description: |-
+          The ID of the service.
+
+          required: true
+          example: 1
+        type: integer
+      name:
+        description: |-
+          The name of the service.
+
+          required: true
+          example: Service 1
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /projects:
+    get:
+      description: Get the list of projects from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get the list of projects
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Insert a new project into the database
+      parameters:
+      - description: Project to be inserted
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Insert a new project
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Update an existing project in the database
+      parameters:
+      - description: Project object to be updated
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Project'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Project'
+      summary: Update an existing project
+      tags:
+      - projects
+  /projects/{id}:
+    get:
+      description: Get a project from the database by its ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a project by ID
+      tags:
+      - projects
+  /upload/{id}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a CSV file, parses its content, and saves the data to the
+        database
+      parameters:
+      - description: CSV file to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CSV file uploaded and saved to the database successfully!
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Upload CSV file and save data to the database
+swagger: "2.0"

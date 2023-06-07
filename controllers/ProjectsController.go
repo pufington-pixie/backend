@@ -21,10 +21,10 @@ import (
 // @Tags projects
 // @Accept json
 // @Produce json
-// @Param project body Project true "Project to be inserted"
-// @Success 200 {object} Response
-// @Failure 400 {object} Response
-// @Failure 500 {object} Response
+// @Param project body models.Project true "Project to be inserted"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /projects [post]
 func InsertProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
@@ -91,10 +91,10 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Accept json
 // @Produce json
-// @Param project body Project true "Project object to be updated"
-// @Success 200 {object} Response
-// @Failure 400 {object} Response
-// @Failure 500 {object} Response
+// @Param project body models.Project true "Project object to be updated"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Project
+// @Failure 500 {object} models.Project
 // @Router /projects [put]
 func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
@@ -165,8 +165,8 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 // @Description Get the list of projects from the database
 // @Tags projects
 // @Produce json
-// @Success 200 {object} Response
-// @Failure 500 {object} Response
+// @Success 200 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /projects [get]
 func GetProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
@@ -218,9 +218,9 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} Response
-// @Failure 404 {object} Response
-// @Failure 500 {object} Response
+// @Success 200 {object} models.Response
+// @Failure 404 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /projects/{id} [get]
 func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
@@ -266,9 +266,9 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 // @Tags projects
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} Response
-// @Failure 400 {object} Response
-// @Failure 500 {object} Response
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
 // @Router /projects/{id} [delete]
 
 func DeleteProject(w http.ResponseWriter, r *http.Request) {
@@ -297,7 +297,7 @@ func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Status = 200
-	response.Message = "Delete data successfully"
+	response.Message = "Project deleted successfully"
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")

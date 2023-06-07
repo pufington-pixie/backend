@@ -12,6 +12,16 @@ import (
 	"example.com/database"
 	"github.com/go-chi/chi"
 )
+//UploadHandler uploads a project by it's ID.
+// @Summary Upload CSV file and save data to the database
+// @Description Uploads a CSV file, parses its content, and saves the data to the database
+// @Accept multipart/form-data
+// @Param file formData file true "CSV file to upload"
+// @Param id path int true "Project ID"
+// @Success 200 {string} string "CSV file uploaded and saved to the database successfully!"
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /upload/{id} [post]
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	
 	// Parse the multipart form in the request
