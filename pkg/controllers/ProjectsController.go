@@ -10,9 +10,9 @@ import (
 	"log"
 	"net/http"
 
-	"example.com/database"
-	"example.com/models"
 	"github.com/go-chi/chi"
+	"github.com/pufington-pixie/haver/pkg/database"
+	"github.com/pufington-pixie/haver/pkg/models"
 )
 
 // InsertProject inserts a new project.
@@ -23,7 +23,7 @@ import (
 // @Produce json
 // @Param project body models.Project true "Project to be inserted"
 // @Success 200 {object} models.Project
-// @Failure 400 {object} models.Response
+// @Failure 404 {} string "User not found"
 // @Failure 500 {object} models.Response
 // @Router /projects [post]
 func InsertProject(w http.ResponseWriter, r *http.Request) {

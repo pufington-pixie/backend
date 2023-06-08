@@ -9,9 +9,10 @@ import (
 
 	"net/http"
 
-	"example.com/database"
 	"github.com/go-chi/chi"
+	"github.com/pufington-pixie/haver/pkg/database"
 )
+
 //UploadHandler uploads a project by it's ID.
 // @Summary Upload CSV file and save data to the database
 // @Description Uploads a CSV file, parses its content, and saves the data to the database

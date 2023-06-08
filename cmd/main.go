@@ -3,7 +3,7 @@ package main
 import (
 	
 
-	"example.com/routes"
+	"github.com/pufington-pixie/haver/pkg/routes"
 )
 
 func main() {

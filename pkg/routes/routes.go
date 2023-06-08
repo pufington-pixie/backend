@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	controller "example.com/controllers"
-	_ "example.com/docs" // Import the generated Swagger docs
+	// Import the generated Swagger docs
 	"github.com/go-chi/chi"
+	controller "github.com/pufington-pixie/haver/pkg/controllers"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
