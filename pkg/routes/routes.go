@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi"
 	controller "github.com/pufington-pixie/haver/pkg/controllers"
 	httpSwagger "github.com/swaggo/http-swagger"
+	_ "github.com/pdrum/swagger-automation/docs" 
 )
 
 // SetRoutes sets up the routing for the API
