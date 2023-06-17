@@ -9,7 +9,7 @@ import (
 	controller "github.com/pufington-pixie/haver/pkg/controllers"
 	httpSwagger "github.com/swaggo/http-swagger"
 	_ "github.com/pdrum/swagger-automation/docs" 
-	_ "github.com/pufington-pixie/haver/cmd/docs"
+	_ "github.com/pufington-pixie/haver/docs"
 	
 	
 )
