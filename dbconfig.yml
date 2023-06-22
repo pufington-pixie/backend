@@ -10,6 +10,6 @@
 
 development:
     dialect: mysql
-    datasource: root:ganesh@/dummy?parseTime=true
+    datasource: root:ganesh@/project?parseTime=true
     dir: ./migrations
     

@@ -1,15 +1,17 @@
 -- +migrate Up
-CREATE TABLE projects (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    projectid INT DEFAULT 0,
-    title VARCHAR(255),
-    date DATE,
-    sap_number VARCHAR(255),
-    notes VARCHAR(255),
-    branchId INT,
-    statusId INT,
-    serviceId INT,
-    CONSTRAINT projects_relation_1 FOREIGN KEY (serviceId) REFERENCES services(id) ON DELETE CASCADE
+DROP TABLE IF EXISTS `projects`;
+CREATE TABLE IF NOT EXISTS `projects` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(128) NOT NULL,
+  `Title` varchar(45) DEFAULT NULL,
+  `Date` datetime DEFAULT NULL,
+  `SAPNumber` varchar(45) DEFAULT NULL,
+  `StatusId` int(11) DEFAULT NULL,
+  `Notes` varchar(500) DEFAULT NULL,
+  `BranchId` int(11) DEFAULT NULL,
+  `ServiceId` int(11),
+  PRIMARY KEY (`Id`),
+   CONSTRAINT projects_relation_1 FOREIGN KEY (ServiceId) REFERENCES services(Id) ON DELETE CASCADE
 );
 
 -- +migrate Down

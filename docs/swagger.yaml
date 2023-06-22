@@ -110,7 +110,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /projects:
+  /api/projects:
     get:
       description: Get the list of projects from the database
       produces:
@@ -156,7 +156,7 @@ paths:
       summary: Insert a new project
       tags:
       - projects
-  /projects/{id}:
+  /api/projects/{id}:
     delete:
       description: Delete a project from the database by its ID
       parameters:
@@ -243,7 +243,7 @@ paths:
       summary: Update an existing project
       tags:
       - projects
-  /upload/{id}:
+  /api/upload/{id}:
     post:
       consumes:
       - multipart/form-data

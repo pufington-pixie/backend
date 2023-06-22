@@ -1,7 +1,8 @@
 -- +migrate Up
+DROP TABLE IF EXISTS `services`;
 CREATE TABLE services (
-    id INT PRIMARY KEY,
-    name VARCHAR(255)
+    Id INT PRIMARY KEY,
+    Name VARCHAR(255)
 );
 
 -- +migrate Down

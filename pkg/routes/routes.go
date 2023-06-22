@@ -19,22 +19,22 @@ func SetRoutes() {
 	r := chi.NewRouter()
 
 	
-	r.Get("/projects", controller.GetProject)
+	r.Get("/api/projects", controller.GetProject)
 
 	
-	r.Post("/projects", controller.InsertProject)
+	r.Post("/api/projects", controller.InsertProject)
 
 	
-	r.Get("/projects/{id}", controller.GetProjectByID)
+	r.Get("/api/projects/{id}", controller.GetProjectByID)
 
 	
-	r.Put("/projects/{id}", controller.UpdateProject)
+	r.Put("/api/projects/{id}", controller.UpdateProject)
 
 
-	r.Delete("/projects/{id}", controller.DeleteProject)
+	r.Delete("/api/projects/{id}", controller.DeleteProject)
 
 	
-	r.Post("/upload/{id}", controller.UploadHandler)
+	r.Post("/api/upload/{id}", controller.UploadHandler)
 
 	// Swagger UI route
 	r.Get("/swagger/*", httpSwagger.Handler(

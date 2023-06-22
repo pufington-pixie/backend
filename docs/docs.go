@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/projects": {
+        "/api/projects": {
             "get": {
                 "description": "Get the list of projects from the database",
                 "produces": [
@@ -86,7 +86,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/projects/{id}": {
+        "/api/projects/{id}": {
             "get": {
                 "description": "Get a project from the database by its ID",
                 "produces": [
@@ -217,7 +217,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/upload/{id}": {
+        "/api/upload/{id}": {
             "post": {
                 "description": "Uploads a CSV file, parses its content, and saves the data to the database",
                 "consumes": [

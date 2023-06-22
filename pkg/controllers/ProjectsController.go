@@ -25,7 +25,7 @@ import (
 // @Success 200 {object} models.Project
 // @Failure 404 {} string "User not found"
 // @Failure 500 {object} models.Response
-// @Router /projects [post]
+// @Router /api/projects [post]
 func InsertProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 
@@ -96,7 +96,7 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Project
 // @Failure 400 {object} models.Response
 // @Failure 500 {object} models.Response
-// @Router /projects/{id} [put]
+// @Router /api/projects/{id} [put]
 func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 
@@ -168,7 +168,7 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} models.Project
 // @Failure 500 {object} models.Response
-// @Router /projects [get]
+// @Router /api/projects [get]
 func GetProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 	var arrProject []models.Project
@@ -222,7 +222,7 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Project
 // @Failure 404 {object} models.Response
 // @Failure 500 {object} models.Response
-// @Router /projects/{id} [get]
+// @Router /api/projects/{id} [get]
 func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 
@@ -270,7 +270,7 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Response
 // @Failure 404 {object} models.Response
 // @Failure 500 {object} models.Response
-// @Router /projects/{id} [delete]
+// @Router /api/projects/{id} [delete]
 func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	var response models.Response
 
