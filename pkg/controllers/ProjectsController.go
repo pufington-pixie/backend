@@ -54,7 +54,7 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	// Prepare the SQL statements
-	projectQuery := "INSERT INTO projects (id,title, date, sapnumber, notes, branchId, statusId, serviceId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	projectQuery := "INSERT INTO projects (id, name, title, date, sapnumber, notes, branchId, statusId, serviceId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	serviceQuery := "INSERT INTO services (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = ?"
 
 	// Insert or update the service in the services table
@@ -68,7 +68,7 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Insert project into the projects table
-	_, err = db.Exec(projectQuery, project.ID,project.Title, project.Date, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID)
+	_, err = db.Exec(projectQuery, project.ID,project.Name, project.Title, project.Date, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID)
 	if err != nil {
 		log.Print(err)
 		response.Status = 500
@@ -127,11 +127,11 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Prepare the SQL statements
-	projectQuery := "UPDATE projects SET title = ?, sapnumber = ?, notes = ?, branchId = ?, statusId = ?, serviceId = ? WHERE id = ?"
+	projectQuery := "UPDATE projects SET  name = ?, title = ?, sapnumber = ?, notes = ?, branchId = ?, statusId = ?, serviceId = ? WHERE id = ?"
 	serviceQuery := "INSERT INTO services (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = ?"
 
 	// Update project data in the database
-	_, err = db.Exec(projectQuery, project.Title, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID, project.ID)
+	_, err = db.Exec(projectQuery,project.Name, project.Title, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID, project.ID)
 	if err != nil {
 		log.Print(err)
 		response.Status = 500
@@ -176,7 +176,7 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 	db := database.GetDB()
 	defer db.Close()
 
-	rows, err := db.Query("SELECT p.id, p.title,  p.sapnumber, p.notes, p.branchid, p.statusid, s.id, s.name " +
+	rows, err := db.Query("SELECT p.id, p.name, p.title,  p.sapnumber, p.notes, p.branchid, p.statusid, s.id, s.name " +
 		"FROM projects p " +
 		"JOIN services s ON p.serviceid = s.id")
 	if err != nil {
@@ -190,7 +190,7 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var project models.Project
 		var service models.Service
-		err = rows.Scan(&project.ID, &project.Title, &project.SAPNumber, &project.Notes, &project.BranchID, &project.StatusID, &service.ID, &service.Name)
+		err = rows.Scan(&project.ID, &project.Name,&project.Title, &project.SAPNumber, &project.Notes, &project.BranchID, &project.StatusID, &service.ID, &service.Name)
 
 		if err != nil {
 			log.Fatal(err.Error())
@@ -238,8 +238,8 @@ func GetProjectByID(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	project := models.Project{}
-	err = db.QueryRow("SELECT p.id, p.title, p.date, p.sapnumber, p.notes, p.branchId, p.statusId, p.serviceId, s.name FROM projects p JOIN services s ON p.serviceId = s.id WHERE p.id = ?", id).
-		Scan(&project.ID, &project.Title, &project.Date, &project.SAPNumber, &project.Notes, &project.BranchID, &project.StatusID, &project.Service.ID, &project.Service.Name)
+	err = db.QueryRow("SELECT p.id, p.name, p.title, p.date, p.sapnumber, p.notes, p.branchId, p.statusId, p.serviceId, s.name FROM projects p JOIN services s ON p.serviceId = s.id WHERE p.id = ?", id).
+		Scan(&project.ID, &project.Name,&project.Title, &project.Date, &project.SAPNumber, &project.Notes, &project.BranchID, &project.StatusID, &project.Service.ID, &project.Service.Name)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.Printf("No Project with that ID.")

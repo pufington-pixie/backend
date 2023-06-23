@@ -6,17 +6,27 @@ import (
 
 	// Import the generated Swagger docs
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
+	_ "github.com/pdrum/swagger-automation/docs"
+	_ "github.com/pufington-pixie/haver/docs"
 	controller "github.com/pufington-pixie/haver/pkg/controllers"
 	httpSwagger "github.com/swaggo/http-swagger"
-	_ "github.com/pdrum/swagger-automation/docs" 
-	_ "github.com/pufington-pixie/haver/docs"
-	
-	
 )
 
 // SetRoutes sets up the routing for the API
 func SetRoutes() {
 	r := chi.NewRouter()
+
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"X-PINGOTHER","Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+		})
+	r.Use(cors.Handler) 
 
 	
 	r.Get("/api/projects", controller.GetProject)

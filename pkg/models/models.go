@@ -35,7 +35,7 @@ type Project struct {
 	//
 	// required: true
 	// example: SAP12345
-	SAPNumber string `json:"sapnumber"`
+	SAPNumber string `json:"sapNumber"`
 
 	// Additional notes for the project.
 	//
@@ -69,13 +69,13 @@ type Service struct {
 	//
 	// required: true
 	// example: 1
-	ID int `json:"id"`
+	ID int `json:"serviceId"`
 
 	// The name of the service.
 	//
 	// required: true
 	// example: Service 1
-	Name string `json:"name"`
+	Name string `json:"serviceName"`
 }
 
 // Response represents a generic API response.
