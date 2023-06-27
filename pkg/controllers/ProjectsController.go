@@ -152,6 +152,31 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if the serviceId exists in the services table
+	var count int
+	err = db.QueryRow("SELECT COUNT(*) FROM services WHERE id = ?", project.Service.ID).Scan(&count)
+	if err != nil {
+		log.Print(err)
+		response.Status = 500
+		response.Message = "Internal Server Error"
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	if count == 0 {
+		// Insert a new row in the services table
+		_, err = db.Exec(serviceQuery, project.Service.ID, project.Service.Name, project.Service.Name)
+		if err != nil {
+			log.Print(err)
+			response.Status = 500
+			response.Message = "Internal Server Error"
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	}
+
 	response.Status = 200
 	response.Message = "Update data successfully"
 	fmt.Print("Update data in the database")
