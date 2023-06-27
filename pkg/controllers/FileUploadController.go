@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"time"
 
 	"net/http"
 
@@ -33,16 +34,47 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the file from the request
-	file, handler, err := r.FormFile("file")
+	file, _, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
-	// Read the CSV file
-	reader := csv.NewReader(file)
+	// Create a unique file name for storing the uploaded file
+	fileName := strconv.FormatInt(time.Now().Unix(), 10) + ".csv"
+	destinationPath := filepath.Join("uploads", fileName)
 
+	// Create the uploads directory if it doesn't exist
+	err = os.MkdirAll("uploads", os.ModePerm)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Create the destination file on the server
+	destinationFile, err := os.Create(destinationPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer destinationFile.Close()
+
+	// Copy the contents of the uploaded file to the destination file
+	_, err = io.Copy(destinationFile, file)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// Read the CSV file
+	csvFile, err := os.Open(destinationPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer csvFile.Close()
+
+	reader := csv.NewReader(csvFile)
 	records, err := reader.ReadAll()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -51,25 +83,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	db := database.GetDB()
     defer db.Close()
 
-		// Save a copy of the CSV file in the assets folder
-		dst, err := os.Create("assets/" + filepath.Base(handler.Filename))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer dst.Close()
-	
-		_, err = file.Seek(0, io.SeekStart) // Reset file position to the beginning
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	
-		_, err = io.Copy(dst, file)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+		
 	// Get the project ID from the projects table
 	projectIDStr := chi.URLParam(r, "id")
 	projectID, err := strconv.Atoi(projectIDStr)
