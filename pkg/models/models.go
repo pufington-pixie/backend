@@ -69,7 +69,7 @@ type Service struct {
 	//
 	// required: true
 	// example: 1
-	ID int `json:"serviceId"`
+	ID int `json:"id"`
 
 	// The name of the service.
 	//

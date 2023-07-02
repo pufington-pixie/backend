@@ -40,7 +40,7 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Define a struct to hold the JSON data
-	var project models.Project
+	var project []models.Project
 	err = json.Unmarshal(body, &project)
 	if err != nil {
 		log.Print(err)
@@ -57,34 +57,35 @@ func InsertProject(w http.ResponseWriter, r *http.Request) {
 	projectQuery := "INSERT INTO projects (id, name, title, date, sapnumber, notes, branchId, statusId, serviceId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	serviceQuery := "INSERT INTO services (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = ?"
 
-	// Insert or update the service in the services table
-	_, err = db.Exec(serviceQuery, project.Service.ID, project.Service.Name, project.Service.Name)
-	if err != nil {
-		log.Print(err)
-		response.Status = 500
-		response.Message = "Internal Server Error"
+	for _, project := range project {// Insert or update the service in the services table
+		_, err = db.Exec(serviceQuery, project.Service.ID, project.Service.Name, project.Service.Name)
+		if err != nil {
+			log.Print(err)
+			response.Status = 500
+			response.Message = "Internal Server Error"
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	
+		// Insert project into the projects table
+		_, err = db.Exec(projectQuery, project.ID,project.Name, project.Title, project.Date, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID)
+		if err != nil {
+			log.Print(err)
+			response.Status = 500
+			response.Message = "Internal Server Error"
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	
+		response.Status = 200
+		response.Message = "Insert data successfully"
+	
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		json.NewEncoder(w).Encode(response)
-		return
 	}
-
-	// Insert project into the projects table
-	_, err = db.Exec(projectQuery, project.ID,project.Name, project.Title, project.Date, project.SAPNumber, project.Notes, project.BranchID, project.StatusID, project.Service.ID)
-	if err != nil {
-		log.Print(err)
-		response.Status = 500
-		response.Message = "Internal Server Error"
-		json.NewEncoder(w).Encode(response)
-		return
 	}
-
-	response.Status = 200
-	response.Message = "Insert data successfully"
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	json.NewEncoder(w).Encode(response)
-}
-
+	
 // UpdateProject updates an existing project.
 // @Summary Update an existing project
 // @Description Update an existing project in the database
