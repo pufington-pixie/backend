@@ -41,18 +41,18 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	
+	// Create a unique file name for storing the uploaded file
 	fileName := strconv.FormatInt(time.Now().Unix(), 10) + ".csv"
 	destinationPath := filepath.Join("uploads", fileName)
 
-	
+	// Create the uploads directory if it doesn't exist
 	err = os.MkdirAll("uploads", os.ModePerm)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	
+	// Create the destination file on the server
 	destinationFile, err := os.Create(destinationPath)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -60,7 +60,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer destinationFile.Close()
 
-	
+	// Copy the contents of the uploaded file to the destination file
 	_, err = io.Copy(destinationFile, file)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -102,14 +102,14 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Insert each row into the database
 	for _, row := range records {
-		_, err := stmt.Exec(projectID,row[0], row[1], row[2],row[4]) 
+		_, err := stmt.Exec(projectID,row[0], row[1], row[2],row[4]) // Modify column names based on your CSV structure
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
-
+	// Return a response
 	w.Write([]byte("CSV file uploaded and saved to the database successfully!"))
 }
 
