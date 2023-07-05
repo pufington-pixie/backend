@@ -45,9 +45,11 @@ func SetRoutes() {
 	
 	r.Post("/api/upload/{id}", controller.UploadHandler)
 
+	r.Get("/api/data/{id}",controller.GetData)
+
 	// Swagger UI route
 	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), 
 	))
 
 
