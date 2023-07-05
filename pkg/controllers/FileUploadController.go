@@ -102,7 +102,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		// Replace spaces with underscores and remove any other unwanted characters
 		header = strings.ReplaceAll(header, " ", "")
 		header = strings.ReplaceAll(header, ".", "") 
-		header = strings.ReplaceAll(header, "-", "") 
+		header = strings.ReplaceAll(header, "?", "") 
 		headers[i] = header
 	}
 	// Prepare the SQL statement for bulk insertion
